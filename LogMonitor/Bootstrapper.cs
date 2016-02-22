@@ -20,8 +20,6 @@ namespace LogMonitor
 
             _kernel.Bind<IWindowManager>().To<WindowManager>().InSingletonScope();
             _kernel.Bind<IEventAggregator>().To<EventAggregator>().InSingletonScope();
-            //_kernel.Bind<IBarcodeSequencer>().To<BarcodeSequencer>();
-
         }
 
         public Bootstrapper()
