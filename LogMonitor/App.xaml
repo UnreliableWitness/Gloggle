@@ -1,0 +1,34 @@
+﻿<Application x:Class="LogMonitor.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:LogMonitor"
+             >
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary>
+                    <local:Bootstrapper x:Key="bootstrapper" />
+
+                    <DataTemplate x:Key="AlternatingTemplate">
+                        <Border Padding="2" BorderThickness="0,0,0,1" BorderBrush="#EBF8FA">
+                            <Border.Style>
+                                <Style TargetType="{x:Type Border}">
+                                    <Style.Triggers>
+                                        <Trigger Property="Border.IsMouseOver" Value="True">
+                                            <Setter Property="Border.Background" Value="#EBF8FA" />
+                                        </Trigger>
+                                        <Trigger Property="Border.IsMouseOver" Value="False">
+                                            <Setter Property="Border.Background" Value="Transparent" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <TextBox Background="Transparent" BorderThickness="0" 
+                                     Text="{Binding Line, Mode=OneWay}" IsReadOnly="True" TextWrapping="Wrap"/>
+                        </Border>
+                    </DataTemplate>
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
