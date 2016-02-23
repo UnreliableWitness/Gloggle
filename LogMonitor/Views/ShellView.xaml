@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LogMonitor.Views"
+        xmlns:cal="http://www.caliburnproject.org"
         mc:Ignorable="d"
         Title="ShellView" Height="600" Width="800">
     <DockPanel Margin="5">
@@ -21,7 +22,7 @@
                 </Grid.ColumnDefinitions>
 
             <!-- Files -->
-            <ListBox SelectedItem="{Binding LogWatcher.CurrentFile, Mode=TwoWay}" Grid.Column="0" ItemsSource="{Binding LogWatcher.LogFiles, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+            <ListBox cal:Message.Attach="[Event SelectionChanged]=[Action SelectionChanged($this)]" SelectedItem="{Binding LogWatcher.CurrentFile, Mode=TwoWay}" Grid.Column="0" ItemsSource="{Binding LogWatcher.LogFiles, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">

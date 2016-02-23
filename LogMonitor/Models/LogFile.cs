@@ -36,46 +36,51 @@ namespace LogMonitor.Models
             FullPath = file.FullName;
             LastWrite = file.LastWriteTime;
 
-            StartLooking();
+            //StartLooking();
         }
 
-        private void StartLooking()
+        public void StartLooking()
         {
             if(!File.Exists(FullPath))
                 return;
 
-            foreach (string line in File.ReadLines(FullPath))
+            foreach (var line in File.ReadLines(FullPath))
             {
                 LogEntries.Add(new LogEntry(line));
             }
 
 
-            Task.Run(() =>
-            {
-                var wh = new AutoResetEvent(false);
-                var fsw = new FileSystemWatcher(Directory);
-                fsw.Filter = Name;
-                fsw.Changed += (s, e) => wh.Set();
-                using (var fileStream = File.Open(FullPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-                using (var file = new StreamReader(fileStream))
-                {
-                    var s = "";
-                    while (true)
-                    {
-                        s = file.ReadLine();
-                        if (s != null)
-                        {
-                            LastWrite = DateTime.Now;
-                            LogEntries.Add(new LogEntry(s));
-                        }
-                        else
-                            wh.WaitOne(1000);
-                    }
-                }
+            //Task.Run(() =>
+            //{
+            //    var wh = new AutoResetEvent(false);
+            //    var fsw = new FileSystemWatcher(Directory);
+            //    fsw.Filter = Name;
+            //    fsw.Changed += (s, e) => wh.Set();
+            //    using (var fileStream = File.Open(FullPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            //    using (var file = new StreamReader(fileStream))
+            //    {
+            //        var s = "";
+            //        while (true)
+            //        {
+            //            s = file.ReadLine();
+            //            if (s != null)
+            //            {
+            //                LastWrite = DateTime.Now;
+            //                LogEntries.Add(new LogEntry(s));
+            //            }
+            //            else
+            //                wh.WaitOne(1000);
+            //        }
+            //    }
 
-                wh.Close();
-            });
+            //    wh.Close();
+            //});
 
+        }
+
+        public void StopLooking()
+        {
+            
         }
     }
 }

@@ -44,10 +44,12 @@ namespace LogMonitor.Services
         {
             var sortingList = new List<LogFile>();
             sortingList.AddRange(LogFiles.OrderByDescending(lf => lf.LastWrite).ToList());
-            var key = CurrentFile.FullPath;
+            var key = CurrentFile?.FullPath;
             LogFiles.Clear();
             LogFiles.AddRange(sortingList);
-            CurrentFile = LogFiles.Single(l => l.FullPath.Equals(key));
+
+            if(key != null)
+                CurrentFile = LogFiles.Single(l => l.FullPath.Equals(key));
         }
 
         private void FileSystemWatcher_Created(object sender, FileSystemEventArgs e)
@@ -63,6 +65,7 @@ namespace LogMonitor.Services
                 return;
 
             LogFiles.AddRange(GetAllLogs(folder));
+            SortLogFiles();
 
             if (!string.IsNullOrEmpty(folder))
             {

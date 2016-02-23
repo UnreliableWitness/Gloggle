@@ -1,4 +1,6 @@
-﻿using Caliburn.Micro;
+﻿using System.Linq;
+using Caliburn.Micro;
+using LogMonitor.Models;
 using LogMonitor.Services;
 
 namespace LogMonitor.ViewModels
@@ -50,6 +52,16 @@ namespace LogMonitor.ViewModels
                 SelectedFolder = dialog.SelectedPath;
                 LogWatcher.StartWatching(SelectedFolder);
             }
+        }
+
+        public void SelectionChanged(LogFile selectedFile)
+        {
+            foreach (var logFile in LogWatcher.LogFiles)
+            {
+                logFile.StopLooking();
+            }
+
+            selectedFile.StartLooking();
         }
 
         public void Start()
