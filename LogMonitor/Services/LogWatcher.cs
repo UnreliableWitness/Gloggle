@@ -10,8 +10,10 @@ namespace LogMonitor.Services
     public class LogWatcher : PropertyChangedBase
     {
         private readonly FileSystemWatcher _fileSystemWatcher;
+        private string _folderFullPath;
         private LogFile _currentFile;
         public BindableCollection<LogFile> LogFiles { get; set; }
+        
 
         public LogFile CurrentFile
         {
@@ -42,13 +44,11 @@ namespace LogMonitor.Services
 
         private void SortLogFiles()
         {
-            var sortingList = new List<LogFile>();
-            sortingList.AddRange(LogFiles.OrderByDescending(lf => lf.LastWrite).ToList());
             var key = CurrentFile?.FullPath;
             LogFiles.Clear();
-            LogFiles.AddRange(sortingList);
 
-            if(key != null)
+            LogFiles.AddRange(GetAllLogs(_folderFullPath));
+            if (key != null)
                 CurrentFile = LogFiles.Single(l => l.FullPath.Equals(key));
         }
 
@@ -64,8 +64,8 @@ namespace LogMonitor.Services
             if (!Directory.Exists(folder))
                 return;
 
+            _folderFullPath = folder;
             LogFiles.AddRange(GetAllLogs(folder));
-            SortLogFiles();
 
             if (!string.IsNullOrEmpty(folder))
             {
@@ -77,7 +77,7 @@ namespace LogMonitor.Services
         private IEnumerable<LogFile> GetAllLogs(string folderPath)
         {
             var folder = new DirectoryInfo(folderPath);
-            return folder.GetFiles("*.txt").Select(f=>new LogFile(f));
+            return folder.GetFiles("*.txt").Select(f=>new LogFile(f)).OrderByDescending(f=>f.LastWrite);
         }
     }
 }

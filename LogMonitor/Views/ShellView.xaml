@@ -6,46 +6,52 @@
         xmlns:local="clr-namespace:LogMonitor.Views"
         xmlns:cal="http://www.caliburnproject.org"
         mc:Ignorable="d"
-        Title="ShellView" Height="600" Width="800">
+        Title="ShellView" Height="600" Width="800" Background="#F7F7F7">
     <DockPanel Margin="5">
-        <Label DockPanel.Dock="Top" Content="Select the folder to your logfiles:"/>
-        <DockPanel DockPanel.Dock="Top" >
-            <Button x:Name="BrowseButton" Content="browse..." DockPanel.Dock="Right" Margin="5,0,0,0"/>
-            <TextBox x:Name="SelectedFolder"  HorizontalAlignment="Stretch" />
-        </DockPanel>
+        <Label DockPanel.Dock="Top" Content="Select the folder to your logfiles:" />
         <DockPanel DockPanel.Dock="Top">
+            <Button x:Name="BrowseButton" Content="browse..." DockPanel.Dock="Right" Margin="5,0,0,0" />
+            <TextBox x:Name="SelectedFolder" HorizontalAlignment="Stretch" />
+        </DockPanel>
+        <DockPanel DockPanel.Dock="Top" Margin="0,5,0,0">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto"></ColumnDefinition>
-                    <ColumnDefinition Width="5"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition MinWidth="200" MaxWidth="300" Width="auto" />
+                    <ColumnDefinition Width="5" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-            <!-- Files -->
-            <ListBox cal:Message.Attach="[Event SelectionChanged]=[Action SelectionChanged($this)]" SelectedItem="{Binding LogWatcher.CurrentFile, Mode=TwoWay}" Grid.Column="0" ItemsSource="{Binding LogWatcher.LogFiles, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding LastWrite, StringFormat='{}{0:dd/MM hh:mm:ss}'}"></TextBlock>
-                            <TextBlock Margin="5,0,0,0" FontWeight="DemiBold" Text="{Binding Name}"/>
-                        </StackPanel>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ListBox>
-            <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch" />
-            <!-- Rolling Log -->
-            <DockPanel Grid.Column="2">
-                <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
-                    <Label FontWeight="DemiBold" Content="You are watching: "></Label>
-                    <Label Content="{Binding LogWatcher.CurrentFile.Name}"></Label>
-                </StackPanel>
-                <ScrollViewer DockPanel.Dock="Top" local:ScrollViewerEx.AutoScrollToEnd="True" VerticalScrollBarVisibility="Auto">
-                <ItemsControl AlternationCount="2" Margin="5"  
-                              ItemsSource="{Binding LogWatcher.CurrentFile.LogEntries}" 
-                              ItemTemplate="{StaticResource AlternatingTemplate}">
-                </ItemsControl>
-                </ScrollViewer>
-            </DockPanel>
+                <!-- Files -->
+                <DockPanel Grid.Column="0">
+                    <TextBox DockPanel.Dock="Top" Margin="0,0,0,5"></TextBox>
+                    <ListBox DockPanel.Dock="Top" cal:Message.Attach="[Event SelectionChanged]=[Action SelectionChanged($this)]"
+                             SelectedItem="{Binding LogWatcher.CurrentFile, Mode=TwoWay}"
+                             ItemsSource="{Binding LogWatcher.LogFiles, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding LastWrite, StringFormat='{}{0:dd/MM hh:mm:ss}'}" />
+                                    <TextBlock Margin="5,0,0,0" FontWeight="DemiBold" TextWrapping="Wrap"
+                                               Text="{Binding Name}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ListBox>
+                </DockPanel>
+                <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch" />
+                <!-- Rolling Log -->
+                <DockPanel Grid.Column="2" Background="White">
+                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+                        <Label FontWeight="DemiBold" Content="You are watching: " />
+                        <Label Content="{Binding LogWatcher.CurrentFile.Name}" />
+                    </StackPanel>
+                    <ScrollViewer DockPanel.Dock="Top" local:ScrollViewerEx.AutoScrollToEnd="True"
+                                  VerticalScrollBarVisibility="Auto">
+                        <ItemsControl AlternationCount="2" Margin="5"
+                                      ItemsSource="{Binding LogWatcher.CurrentFile.LogEntries}"
+                                      ItemTemplate="{StaticResource AlternatingTemplate}" />
+                    </ScrollViewer>
+                </DockPanel>
             </Grid>
         </DockPanel>
     </DockPanel>

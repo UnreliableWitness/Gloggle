@@ -63,18 +63,5 @@ namespace LogMonitor.ViewModels
 
             selectedFile.StartLooking();
         }
-
-        public void Start()
-        {
-            StartMonitoring();
-        }
-
-        private void StartMonitoring()
-        {
-
-        }
-
-
-
     }
 }
